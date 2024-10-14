@@ -34,10 +34,9 @@ def reader_function(paths):
                     data = data[:, :, :, :, :, 0]
                 metadata = {
                     "rgb": f.is_rgb,
-                    "channel_axis": 2,
-                    "translate": (f.pos_t_seconds, f.pos_z_um, f.pos_y_um, f.pos_x_um),
+                    "channel_axis": 1,
+                    "translate": (f.pos_z_um, f.pos_y_um, f.pos_x_um),
                     "scale": (
-                        f.scale_t_seconds,
                         f.scale_z_um,
                         f.scale_y_um,
                         f.scale_x_um,
@@ -52,5 +51,6 @@ def reader_function(paths):
                             f"S{scene_index:02d} {channel_name}"
                             for channel_name in f.channel_names
                         ]
+            data = np.squeeze(data)
             layer_data.append((data, metadata, "image"))
     return layer_data
