@@ -27,8 +27,8 @@ def reader_function(paths):
                 data = f.as_tzcyx0_array(max_workers=cpu_count())
                 # https://github.com/BodenmillerGroup/napari-czifile2/issues/5
                 contrast_limits = None
-                if data.dtype == np.uint16:
-                    contrast_limits = (0, 65535)
+                # if data.dtype == np.uint16:
+                #     contrast_limits = (0, 65535)
                 # https://github.com/napari/napari/issues/2348
                 if not f.is_rgb:
                     data = data[:, :, :, :, :, 0]
@@ -52,5 +52,7 @@ def reader_function(paths):
                             for channel_name in f.channel_names
                         ]
             data = np.squeeze(data)
+            data = data.astype(np.float32)
+
             layer_data.append((data, metadata, "image"))
     return layer_data
